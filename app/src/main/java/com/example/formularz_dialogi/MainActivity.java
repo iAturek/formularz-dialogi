@@ -1,238 +1,102 @@
 package com.example.formularz_dialogi;
 
 import android.os.Bundle;
-import android.util.Patterns;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.materialswitch.MaterialSwitch;
-import com.google.android.material.snackbar.Snackbar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText etAddress, etPhone;
-    private Button btnSubmit, btnClear;
-    private Spinner spPizza;
-    private RadioGroup rgSize;
-    private SeekBar sbQuantity;
-    private TextView tvQuantityValue, tvSummary;
-    private MaterialSwitch swSauce;
-    private CheckBox cbTerms;
-
-    private static class FormState {
-        String address;
-        String phone;
-        int pizzaPosition;
-        int checkedRadioId;
-        int quantity;
-        boolean sauceChecked;
-        boolean termsChecked;
-        boolean isSubmitEnabled;
-    }
-
-    private FormState backupState = null;
+    private EditText etWeight, etHeight;
+    private RadioGroup rgGender;
+    private Button btnCalculate;
+    private TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        etAddress = findViewById(R.id.etAddress);
-        etPhone = findViewById(R.id.etPhone);
-        btnSubmit = findViewById(R.id.btnSubmit);
-        btnClear = findViewById(R.id.btnClear);
-        spPizza = findViewById(R.id.spPizza);
-        rgSize = findViewById(R.id.rgSize);
-        sbQuantity = findViewById(R.id.sbQuantity);
-        tvQuantityValue = findViewById(R.id.tvQuantityValue);
-        tvSummary = findViewById(R.id.tvSummary);
-        swSauce = findViewById(R.id.swSauce);
-        cbTerms = findViewById(R.id.cbTerms);
+        etWeight = findViewById(R.id.etWeight);
+        etHeight = findViewById(R.id.etHeight);
+        rgGender = findViewById(R.id.rgGender);
+        btnCalculate = findViewById(R.id.btnCalculate);
+        tvResult = findViewById(R.id.tvResult);
 
-        setUpPizzaSpinner();
-        setUpListeners();
-
-        tvQuantityValue.setText(String.valueOf(sbQuantity.getProgress()));
-    }
-
-    private void setUpPizzaSpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.pizza_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spPizza.setAdapter(adapter);
-    }
-
-    private void setUpListeners() {
-        cbTerms.setOnCheckedChangeListener((buttonView, isChecked) ->
-                btnSubmit.setEnabled(isChecked));
-
-        btnSubmit.setOnClickListener(v -> {
+        btnCalculate.setOnClickListener(v -> {
             if (validateForm()) {
-                askForConfirmation();
+                calculateBMI();
             }
         });
-
-        btnClear.setOnClickListener(v -> askForClearConfirmation());
-
-        sbQuantity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvQuantityValue.setText(String.valueOf(progress));
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
-        });
-
-        spPizza.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    tvSummary.setText("");
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-    }
-
-    private void askForClearConfirmation() {
-        new AlertDialog.Builder(this)
-                .setTitle("Czyszczenie formularza")
-                .setMessage("Czy na pewno chcesz wyczyścić wszystkie pola?")
-                .setPositiveButton(R.string.yes, (dialog, which) -> clearForm())
-                .setNegativeButton(android.R.string.no, null)
-                .show();
-    }
-
-    private void clearForm() {
-        backupState = new FormState();
-        backupState.address = etAddress.getText().toString();
-        backupState.phone = etPhone.getText().toString();
-        backupState.pizzaPosition = spPizza.getSelectedItemPosition();
-        backupState.checkedRadioId = rgSize.getCheckedRadioButtonId();
-        backupState.quantity = sbQuantity.getProgress();
-        backupState.sauceChecked = swSauce.isChecked();
-        backupState.termsChecked = cbTerms.isChecked();
-        backupState.isSubmitEnabled = btnSubmit.isEnabled();
-
-        etAddress.setText("");
-        etPhone.setText("");
-        spPizza.setSelection(0);
-        rgSize.clearCheck();
-        sbQuantity.setProgress(0);
-        swSauce.setChecked(false);
-        cbTerms.setChecked(false);
-        btnSubmit.setEnabled(false);
-        tvSummary.setText("");
-
-        etAddress.setError(null);
-        etPhone.setError(null);
-
-        Snackbar.make(findViewById(R.id.main_scroll_view), "Wyczyszczono formularz", Snackbar.LENGTH_LONG)
-                .setAction("COFNIJ", v -> restoreFormState())
-                .show();
-    }
-
-    private void restoreFormState() {
-        if (backupState != null) {
-            etAddress.setText(backupState.address);
-            etPhone.setText(backupState.phone);
-            spPizza.setSelection(backupState.pizzaPosition);
-
-            if (backupState.checkedRadioId != -1) {
-                rgSize.check(backupState.checkedRadioId);
-            } else {
-                rgSize.clearCheck();
-            }
-
-            sbQuantity.setProgress(backupState.quantity);
-            swSauce.setChecked(backupState.sauceChecked);
-            cbTerms.setChecked(backupState.termsChecked);
-            btnSubmit.setEnabled(backupState.isSubmitEnabled);
-
-            backupState = null;
-        }
     }
 
     private boolean validateForm() {
-        String address = etAddress.getText().toString().trim();
-        if (address.isEmpty()) {
-            etAddress.setError(getString(R.string.error_address));
-            etAddress.requestFocus();
+        String weightStr = etWeight.getText().toString().trim();
+        if (weightStr.isEmpty()) {
+            etWeight.setError("Pole waga nie może być puste!");
+            etWeight.requestFocus();
             return false;
         }
 
-        String phone = etPhone.getText().toString().trim();
-        if (!Patterns.PHONE.matcher(phone).matches()) {
-            etPhone.setError(getString(R.string.error_phone));
-            etPhone.requestFocus();
+        double weight = Double.parseDouble(weightStr);
+        if (weight == 0) {
+            etWeight.setError("Waga nie może wynosić zero!");
+            etWeight.requestFocus();
             return false;
         }
 
-        if (spPizza.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, R.string.error_pizza, Toast.LENGTH_SHORT).show();
+        String heightStr = etHeight.getText().toString().trim();
+        if (heightStr.isEmpty()) {
+            etHeight.setError("Pole wzrost nie może być puste!");
+            etHeight.requestFocus();
             return false;
         }
 
-        if (rgSize.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, R.string.error_size, Toast.LENGTH_SHORT).show();
+        int height = Integer.parseInt(heightStr);
+        if (height == 0) {
+            etHeight.setError("Wzrost nie może wynosić zero!");
+            etHeight.requestFocus();
             return false;
         }
 
-        if (sbQuantity.getProgress() == 0) {
-            Toast.makeText(this, R.string.error_quantity, Toast.LENGTH_SHORT).show();
+        if (height > 300) {
+            etHeight.setError("Wzrost nie może przekraczać 300 cm!");
+            etHeight.requestFocus();
+            return false;
+        }
+
+        if (rgGender.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Wybierz płeć!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         return true;
     }
 
-    private void askForConfirmation() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.confirm_title)
-                .setMessage(R.string.confirm_message)
-                .setPositiveButton(R.string.yes, (dialog, which) -> submitForm())
-                .setNegativeButton(android.R.string.no, null)
-                .show();
+    private void calculateBMI() {
+        double weight = Double.parseDouble(etWeight.getText().toString().trim());
+        double heightCm = Double.parseDouble(etHeight.getText().toString().trim());
+        double heightM = heightCm / 100.0;
+
+        double bmi = weight / (heightM * heightM);
+        String category = getBMICategory(bmi);
+
+        tvResult.setText(String.format(Locale.getDefault(), "Twój wynik BMI: %.2f\nKategoria: %s", bmi, category));
     }
 
-    private void submitForm() {
-        tvSummary.setText(buildSummary());
-
-        Snackbar.make(findViewById(R.id.main_scroll_view), R.string.sent, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, v -> tvSummary.setText(""))
-                .show();
-    }
-
-    private String buildSummary() {
-        String size = rgSize.getCheckedRadioButtonId() == R.id.rbSizeSmall
-                ? getString(R.string.size_small)
-                : getString(R.string.size_large);
-
-        String sauce = swSauce.isChecked()
-                ? getString(R.string.yes_short)
-                : getString(R.string.no_short);
-
-        return getString(R.string.summary_format,
-                etAddress.getText().toString().trim(),
-                etPhone.getText().toString().trim(),
-                spPizza.getSelectedItem().toString(),
-                size,
-                sbQuantity.getProgress(),
-                sauce);
+    private String getBMICategory(double bmi) {
+        if (bmi < 18.5) {
+            return "Niedowaga";
+        } else if (bmi < 25.0) {
+            return "Waga prawidłowa";
+        } else if (bmi < 30.0) {
+            return "Nadwaga";
+        } else {
+            return "Otyłość";
+        }
     }
 }

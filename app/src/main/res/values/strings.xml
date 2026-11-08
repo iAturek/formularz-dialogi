@@ -1,29 +1,2 @@
 <resources>
-    <string name="app_name">Zamówienie Pizzy</string>
-
-    <string name="error_address">Wpisz adres dostawy!</string>
-    <string name="error_phone">Wpisz poprawny numer telefonu!</string>
-    <string name="error_pizza">Wybierz rodzaj pizzy!</string>
-    <string name="error_size">Wybierz rozmiar pizzy!</string>
-    <string name="error_quantity">Ilość musi wynosić minimum 1!</string>
-
-    <string name="confirm_title">Potwierdzenie</string>
-    <string name="confirm_message">Czy chcesz złożyć zamówienie?</string>
-    <string name="yes">Tak</string>
-    <string name="sent">Zamówienie wysłane!</string>
-    <string name="undo">Cofnij</string>
-
-    <string name="size_small">Mała</string>
-    <string name="size_large">Duża</string>
-    <string name="yes_short">Tak</string>
-    <string name="no_short">Nie</string>
-
-    <string name="summary_format">Adres: %1$s\nTelefon: %2$s\nPizza: %3$s\nRozmiar: %4$s\nIlość: %5$d szt.\nSos czosnkowy: %6$s</string>
-
-    <string-array name="pizza_types">
-        <item>-- Wybierz pizzę --</item>
-        <item>Margherita</item>
-        <item>Capricciosa</item>
-        <item>Pepperoni</item>
-    </string-array>
 </resources>
