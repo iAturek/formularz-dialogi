@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    tools:context=".MainActivity">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,155 +12,139 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#008080"
-            android:padding="12dp"
-            android:text="@string/header"
-            android:textColor="#FFFFFF"
-            android:textSize="28sp" />
+            android:text="Zamówienie Pizzy"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:paddingBottom="16dp"/>
 
         <TextView
-            android:id="@+id/tvLabelName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/label_name" />
-
-        <EditText
-            android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_name"
-            android:inputType="textPersonName"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/tvLabelEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/label_email" />
-
-        <EditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/tvLabelBirthDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/label_birth_date" />
-
-        <Button
-            android:id="@+id/btnBirthDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_pick_date" />
-
-        <TextView
-            android:id="@+id/tvLabelCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/label_course" />
+            android:text="Wybierz rodzaj pizzy:"/>
 
         <Spinner
-            android:id="@+id/spCourse"
+            android:id="@+id/spPizzaType"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tvLabelMode"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/label_mode" />
+            android:paddingBottom="16dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wybierz rozmiar:"/>
 
         <RadioGroup
-            android:id="@+id/rgMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rbOnsite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mode_onsite" />
-
-            <RadioButton
-                android:id="@+id/rbRemote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/mode_remote" />
-        </RadioGroup>
-
-        <LinearLayout
-            android:id="@+id/rowLevel"
+            android:id="@+id/rgSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbSizeSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mała"/>
+
+            <RadioButton
+                android:id="@+id/rbSizeMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Średnia"/>
+
+            <RadioButton
+                android:id="@+id/rbSizeLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duża"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dodatki:"/>
+
+        <CheckBox
+            android:id="@+id/cbCheese"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dodatkowy ser"/>
+
+        <CheckBox
+            android:id="@+id/cbMushrooms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pieczarki"/>
+
+        <CheckBox
+            android:id="@+id/cbHam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Szynka"
+            android:paddingBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvLabelLevel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/label_level" />
-
-            <TextView
-                android:id="@+id/tvLevelValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                tools:text="5" />
+                android:text="Ilość sztuk: "/>
+
+            <TextView
+                android:id="@+id/tvQuantityValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"/>
         </LinearLayout>
 
         <SeekBar
-            android:id="@+id/sbLevel"
+            android:id="@+id/sbQuantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="10"
-            android:progress="0" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/swNewsletter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/newsletter" />
+            android:progress="0"
+            android:paddingBottom="16dp"/>
 
         <CheckBox
-            android:id="@+id/cbTerms"
-            android:layout_width="wrap_content"
+            android:id="@+id/swDelivery"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/terms" />
+            android:text="Dostawa do domu"
+            android:paddingBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Adres dostawy"
+            android:inputType="textPostalAddress"
+            android:visibility="gone"
+            android:paddingBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numer telefonu"
+            android:inputType="phone"
+            android:paddingBottom="24dp"/>
 
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:enabled="false"
-            android:text="@string/btn_submit" />
+            android:text="Złóż zamówienie"/>
 
         <TextView
             android:id="@+id/tvSummary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="16sp"
-            tools:text="Jan Kowalski\njan@przyklad.pl" />
+            android:paddingTop="16dp"
+            android:textSize="16sp"/>
 
     </LinearLayout>
-
 </ScrollView>
