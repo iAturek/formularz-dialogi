@@ -54,12 +54,17 @@ public class MainActivity extends AppCompatActivity {
         swNewsletter = findViewById(R.id.swNewsletter);
         cbTerms = findViewById(R.id.cbTerms);
 
-//        setUpCourseSpinner();
+        setUpCourseSpinner();
         setUpListeners();
         tvLevelValue.setText(String.valueOf(sbLevel.getProgress()));
     }
 
-
+    private void setUpCourseSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.courses, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCourse.setAdapter(adapter);
+    }
 
     private void setUpListeners() {
         cbTerms.setOnCheckedChangeListener((buttonView, isChecked) ->
