@@ -25,10 +25,11 @@
             android:text="Wybierz rodzaj pizzy:"/>
 
         <Spinner
-            android:id="@+id/spPizzaType"
+            android:id="@+id/spPizza"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,41 +49,11 @@
                 android:text="Mała"/>
 
             <RadioButton
-                android:id="@+id/rbSizeMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Średnia"/>
-
-            <RadioButton
                 android:id="@+id/rbSizeLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Duża"/>
         </RadioGroup>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dodatki:"/>
-
-        <CheckBox
-            android:id="@+id/cbCheese"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dodatkowy ser"/>
-
-        <CheckBox
-            android:id="@+id/cbMushrooms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pieczarki"/>
-
-        <CheckBox
-            android:id="@+id/cbHam"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Szynka"
-            android:paddingBottom="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,11 +80,11 @@
             android:progress="0"
             android:paddingBottom="16dp"/>
 
-        <CheckBox
-            android:id="@+id/swDelivery"
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/swSauce"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dostawa do domu"
+            android:text="Dodatkowy sos czosnkowy"
             android:paddingBottom="16dp"/>
 
         <EditText
@@ -122,7 +93,6 @@
             android:layout_height="wrap_content"
             android:hint="Adres dostawy"
             android:inputType="textPostalAddress"
-            android:visibility="gone"
             android:paddingBottom="16dp"/>
 
         <EditText
@@ -133,11 +103,19 @@
             android:inputType="phone"
             android:paddingBottom="24dp"/>
 
+        <CheckBox
+            android:id="@+id/cbTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Akceptuję regulamin zamówienia"
+            android:paddingBottom="16dp"/>
+
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Złóż zamówienie"/>
+            android:text="Złóż zamówienie"
+            android:enabled="false"/>
 
         <TextView
             android:id="@+id/tvSummary"
