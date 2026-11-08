@@ -23,13 +23,26 @@ import com.google.android.material.snackbar.Snackbar;
 public class MainActivity extends AppCompatActivity {
 
     private EditText etAddress, etPhone;
-    private Button btnSubmit;
+    private Button btnSubmit, btnClear;
     private Spinner spPizza;
     private RadioGroup rgSize;
     private SeekBar sbQuantity;
     private TextView tvQuantityValue, tvSummary;
     private MaterialSwitch swSauce;
     private CheckBox cbTerms;
+
+    private static class FormState {
+        String address;
+        String phone;
+        int pizzaPosition;
+        int checkedRadioId;
+        int quantity;
+        boolean sauceChecked;
+        boolean termsChecked;
+        boolean isSubmitEnabled;
+    }
+
+    private FormState backupState = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         etAddress = findViewById(R.id.etAddress);
         etPhone = findViewById(R.id.etPhone);
         btnSubmit = findViewById(R.id.btnSubmit);
+        btnClear = findViewById(R.id.btnClear);
         spPizza = findViewById(R.id.spPizza);
         rgSize = findViewById(R.id.rgSize);
         sbQuantity = findViewById(R.id.sbQuantity);
@@ -49,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpPizzaSpinner();
         setUpListeners();
+
         tvQuantityValue.setText(String.valueOf(sbQuantity.getProgress()));
     }
 
@@ -69,15 +84,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnClear.setOnClickListener(v -> askForClearConfirmation());
+
         sbQuantity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvQuantityValue.setText(String.valueOf(progress));
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) { }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
@@ -89,10 +104,68 @@ public class MainActivity extends AppCompatActivity {
                     tvSummary.setText("");
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
+    }
+
+    private void askForClearConfirmation() {
+        new AlertDialog.Builder(this)
+                .setTitle("Czyszczenie formularza")
+                .setMessage("Czy na pewno chcesz wyczyścić wszystkie pola?")
+                .setPositiveButton(R.string.yes, (dialog, which) -> clearForm())
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+    }
+
+    private void clearForm() {
+        backupState = new FormState();
+        backupState.address = etAddress.getText().toString();
+        backupState.phone = etPhone.getText().toString();
+        backupState.pizzaPosition = spPizza.getSelectedItemPosition();
+        backupState.checkedRadioId = rgSize.getCheckedRadioButtonId();
+        backupState.quantity = sbQuantity.getProgress();
+        backupState.sauceChecked = swSauce.isChecked();
+        backupState.termsChecked = cbTerms.isChecked();
+        backupState.isSubmitEnabled = btnSubmit.isEnabled();
+
+        etAddress.setText("");
+        etPhone.setText("");
+        spPizza.setSelection(0);
+        rgSize.clearCheck();
+        sbQuantity.setProgress(0);
+        swSauce.setChecked(false);
+        cbTerms.setChecked(false);
+        btnSubmit.setEnabled(false);
+        tvSummary.setText("");
+
+        etAddress.setError(null);
+        etPhone.setError(null);
+
+        Snackbar.make(findViewById(R.id.main_scroll_view), "Wyczyszczono formularz", Snackbar.LENGTH_LONG)
+                .setAction("COFNIJ", v -> restoreFormState())
+                .show();
+    }
+
+    private void restoreFormState() {
+        if (backupState != null) {
+            etAddress.setText(backupState.address);
+            etPhone.setText(backupState.phone);
+            spPizza.setSelection(backupState.pizzaPosition);
+
+            if (backupState.checkedRadioId != -1) {
+                rgSize.check(backupState.checkedRadioId);
+            } else {
+                rgSize.clearCheck();
+            }
+
+            sbQuantity.setProgress(backupState.quantity);
+            swSauce.setChecked(backupState.sauceChecked);
+            cbTerms.setChecked(backupState.termsChecked);
+            btnSubmit.setEnabled(backupState.isSubmitEnabled);
+
+            backupState = null;
+        }
     }
 
     private boolean validateForm() {

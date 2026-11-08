@@ -103,6 +103,13 @@
             android:inputType="phone"
             android:paddingBottom="24dp"/>
 
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wyczyść formularz"
+            android:layout_marginBottom="12dp"/>
+
         <CheckBox
             android:id="@+id/cbTerms"
             android:layout_width="match_parent"
